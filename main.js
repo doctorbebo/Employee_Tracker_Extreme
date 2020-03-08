@@ -9,6 +9,7 @@ async function start()
     switch (res) {
         case "Add":
             console.log("user wants to add");
+            add();
             break;
         case "View":
             console.log("user wants to view");
@@ -18,7 +19,7 @@ async function start()
             console.log("user wants to update");
             break;
             default:
-                console.log("Falue");    
+            dataBase.EndConnection();    
             break;
     }
 }
@@ -27,23 +28,50 @@ async function start()
 async function view()
 {
     const res = await inq.View();
+    if(res === "employee" || res === "role" || res === "department")
+    {
+        dataBase.View(res);
+    }else if(res === "all")
+    {
+        dataBase.ViewAll();
+    }
+    else
+    {
+        console.log("Error, Make sure possible answers match.");
+    }
+}
+
+async function add()
+{
+    const res = await inq.Add();
+    let info = '';
     switch (res) {
-        case "Employees":
-            console.log("user wants to view employees");
+        case "employee":
+            info = await inq.AddEmployee()
+            dataBase.NewEmployee(info.first_name, info.last_name, info.role_id, info.manager_id);
             break;
-        case "Roles":
-            console.log("user wants to view roles");
+        case "role":
+            info = await inq.AddRole()
+            dataBase.NewRole(info.title, info.salary, info.department_id);
             break;
-        case "Departments":
-            console.log("user wants to view departments");
+        case "department":
+            info = await inq.AddDepartment()
+            dataBase.NewDepartment(info.last_name)
             break;
-        case "All":
-            console.log("User Wants to view all entries");
-            break;
-            default:
-                console.log("Falue");    
+        default:
             break;
     }
 }
 
 start();
+
+function restart()
+{
+    start();
+}
+
+module.exports = 
+{
+    restart: restart,
+    hello: restart
+}
