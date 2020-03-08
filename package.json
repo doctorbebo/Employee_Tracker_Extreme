@@ -1,0 +1,23 @@
+{
+  "name": "employee_tracker_extreme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doctorbebo/Employee_Tracker_Extreme.git"
+  },
+  "author": "Byron Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doctorbebo/Employee_Tracker_Extreme/issues"
+  },
+  "homepage": "https://github.com/doctorbebo/Employee_Tracker_Extreme#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.0.6"
+  }
+}
