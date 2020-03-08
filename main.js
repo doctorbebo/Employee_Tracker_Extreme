@@ -1,4 +1,6 @@
 const inq = require("./inq");
+const dataBase = require("./dataBase");
+
 
 async function start()
 {
@@ -43,6 +45,5 @@ async function view()
             break;
     }
 }
-
 
 start();
