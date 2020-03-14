@@ -1,6 +1,10 @@
 const inq = require("./inq");
 const dataBase = require("./dataBase");
 
+function log()
+{
+    console.log("test");
+}
 
 async function start()
 {
@@ -17,9 +21,10 @@ async function start()
             break;
         case "Update":
             console.log("user wants to update");
+            update();
             break;
             default:
-            dataBase.EndConnection();    
+            dataBase.EndConnection();  
             break;
     }
 }
@@ -39,6 +44,7 @@ async function view()
     {
         console.log("Error, Make sure possible answers match.");
     }
+    start();
 }
 
 async function add()
@@ -49,29 +55,35 @@ async function add()
         case "employee":
             info = await inq.AddEmployee()
             dataBase.NewEmployee(info.first_name, info.last_name, info.role_id, info.manager_id);
+            start();
             break;
         case "role":
             info = await inq.AddRole()
             dataBase.NewRole(info.title, info.salary, info.department_id);
+            start();
             break;
         case "department":
             info = await inq.AddDepartment()
-            dataBase.NewDepartment(info.last_name)
+            dataBase.NewDepartment(info.last_name);
+            start();
             break;
         default:
             break;
     }
 }
 
-start();
-
-function restart()
+async function update()
 {
-    start();
+   const res = await inq.UpdateEmployeeRole();
+   dataBase.UpdateEmployeeRole(res.employee_id, res.role_update);
+   start();
 }
 
-module.exports = 
+
+
+start();
+
+module.exports = function()
 {
-    restart: restart,
-    hello: restart
+    start();
 }

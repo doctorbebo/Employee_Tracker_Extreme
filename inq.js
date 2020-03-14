@@ -1,29 +1,5 @@
 const inquirer = require("inquirer");
 
-// async function doWork()
-// {
-//     let promise = new Promise((res, rej)=>
-//     {
-//         inquirer.prompt({
-//             type: "list",
-//             name: "answer",
-//             message: "what would you like to do?",
-//             choices: ["Add", "Update", "view"]
-//         }).then((a)=>
-//         {
-//             res(a.answer);
-//         }).catch((err) => 
-//         {
-//             if(err)throw err;
-//         })
-//     });
-
-//     let a = await promise;
-//     return a;
-
-// }
-
-
 function doWork()
 {
     return inquirer.prompt({
@@ -141,6 +117,27 @@ function AddDepartment()
     })
 }
 
+function UpdateEmployeeRole()
+{
+    return inquirer.prompt([{
+        type: "number",
+        name: "employee_id",
+        message: "What is the employee's id number you want to update?",
+    },
+    {
+        type: "number",
+        name: "role_update",
+        message: "What is the employee's new role Id?"
+    }]).then((a)=>
+    {
+        console.log(a);
+        return a;
+    }).catch((err) => 
+    {
+        if(err)throw err;
+    })
+}
+
 module.exports =
 {
     Start: doWork,
@@ -148,5 +145,6 @@ module.exports =
     Add: Add,
     AddRole: AddRole,
     AddEmployee: AddEmployee,
-    AddDepartment: AddDepartment
+    AddDepartment: AddDepartment,
+    UpdateEmployeeRole: UpdateEmployeeRole
 }

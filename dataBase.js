@@ -1,5 +1,6 @@
 const mysql = require("mysql");
-const main = require("./main");
+const Table = require('console.table');
+
 
 
     connection = mysql.createConnection(
@@ -17,29 +18,24 @@ function view(category)
     connection.query("SELECT * FROM ??",[category], (err, results)=>
     {
         if(err) throw err;
-
-        console.log(results);
-        main.restart();
+        console.table('\n', results);
     })
 }
 
 function viewAll()
 {
-    const list = [];
     connection.query("SELECT * FROM employee", (err, results)=>
     {
         if(err) throw err;
-        list.push(results);
+        console.table(['id', 'First name', 'Last name', 'Role id', 'managers id'], results);
         connection.query("SELECT * FROM role", (err, results)=>
         {
             if(err) throw err;
-            list.push(results);
+            console.table(['id','Title', 'Salary', 'Department'], results);
             connection.query("SELECT * FROM department", (err, results)=>
             {
                 if(err) throw err;
-                list.push(results);
-                console.log(list);
-                main.restart();
+                console.table(['id', 'Name'], results);                
             })
         });
     });
@@ -49,32 +45,39 @@ function newEmployee(firstName, lastName, roleId, managersId)
 {
 connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${firstName}", "${lastName}", ${roleId}, ${managersId})`,
 (err)=>
-{
-    if(err) throw err;
-    
-    console.log("Entry added");
-    main.hello();
-});
+    {
+        if(err) throw err;
+        return "Entry added"
+    });
 }
 function newRole(title, salary, department_id)
 {
 connection.query(`INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", ${department_id})`,
-(err)=>
-{
-    if(err) throw err;
-    console.log("Entry added");
-    main.hello();
-});
+    (err)=>
+    {
+        if(err) throw err;
+        console.log("Entry added");
+
+    });
 }
 function newDepartment(name)
 {
-connection.query(`INSERT INTO department (name) VALUES ("${name}")`,
-(err)=>
+    connection.query(`INSERT INTO department (name) VALUES ("${name}")`,
+    (err)=>
+    {
+        if(err) throw err;
+        console.log("Entry added");
+    });
+}
+
+function updateEmployeeRole(employe_id, employee_new_role)
 {
-    if(err) throw err;
-    console.log("Entry added");
-    main.hello();
-});
+    console.log(employe_id + employee_new_role);
+    connection.query(`UPDATE employee SET role_id = ${employee_new_role} WHERE id = ${employe_id};`, (err) =>
+        {
+            if (err) throw err;
+            view('employee');
+        });
 }
 
 function endConnection()
@@ -100,5 +103,6 @@ module.exports =
     NewEmployee: newEmployee,
     NewRole: newRole,
     NewDepartment: newDepartment,
-    EndConnection: endConnection
+    EndConnection: endConnection,
+    UpdateEmployeeRole: updateEmployeeRole
 }
